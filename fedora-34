@@ -23,8 +23,7 @@ dnf_remove_packages="php-mysqlnd"
 
 function dnf_install_packages {
     # shellcheck disable=SC2086
-    #sudo dnf update && sudo dnf install -y ${dnf_packages} ${dnf_packages_optional} ${dnf_packages_compression} ${dnf_packages_php}
-    echo "dnf_install_packages"
+    sudo dnf update && sudo dnf install -y ${dnf_packages} ${dnf_packages_optional} ${dnf_packages_compression} ${dnf_packages_php}
 }
 
 function dnf_remove_packages {
