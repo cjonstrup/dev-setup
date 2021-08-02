@@ -34,14 +34,14 @@ function dnf_remove_packages {
 
 function dnf_system_setup {
     # shellcheck disable=SC2086
-    # sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-    # sudo dnf -y install docker-ce docker-ce-cli containerd.io && systemctl enable docker && gpasswd -a ${USER} docker && sudo systemctl restart docker && sudo newgrp docker
+    sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+    sudo dnf -y install docker-ce docker-ce-cli containerd.io && systemctl enable docker && gpasswd -a ${USER} docker && sudo systemctl restart docker && sudo newgrp docker
     
-    #sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    #sudo chmod +x /usr/local/bin/docker-compose
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
     
-    #sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.6/ctop-0.7.6-linux-amd64 -O /usr/local/bin/ctop
-    #sudo chmod +x /usr/local/bin/ctop
+    sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.6/ctop-0.7.6-linux-amd64 -O /usr/local/bin/ctop
+    sudo chmod +x /usr/local/bin/ctop
     
     #sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
     #sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
