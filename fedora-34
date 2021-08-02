@@ -32,15 +32,19 @@ function dnf_remove_packages {
 }
 
 function dnf_system_setup {
+
+    #Disable firewall
+    sudo systemctl disable firewalld && sudo systemctl stop firewalld
+
     # shellcheck disable=SC2086
     sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
     sudo dnf -y install docker-ce docker-ce-cli containerd.io
     sudo systemctl enable docker 
     sudo newgrp docker
-    sudo gpasswd -a ${USER} docker    
+    sudo usermod -aG docker $USER   
     sudo systemctl restart docker
     
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
     
     sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.5/ctop-0.7.5-linux-amd64 -O /usr/local/bin/ctop
@@ -49,9 +53,9 @@ function dnf_system_setup {
     sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
     sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-
-    #sudo tar zxvf google-native-helper.tar.gz
-    sudo wget https://github.com/cjonstrup/dev-setup/raw/main/google-native-helper.tar.gz -O /google-native-helper.tar.gz
+    #Google endpoint verfication
+    sudo curl -L "https://github.com/cjonstrup/dev-setup/raw/main/google-native-helper.tar.gz" -o google-native-helper.tar.gz
+    sudo tar zxvf google-native-helper.tar.gz -C /
 }
 
 function display_packages {
@@ -75,9 +79,6 @@ agree with any of the decisions.
 
 
 The packages listed after zsh are technically optional but are quite useful.
-Keep in mind if you don't install pwgen you won't be able to generate random
-passwords using a custom alias that's included in these dotfiles.
-
 
 EOF
     while true; do
