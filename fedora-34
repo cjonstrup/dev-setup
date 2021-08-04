@@ -13,7 +13,7 @@ GREEN='\033[1;32m'
 NC='\033[0m' # No Color
 
 dnf_packages="wget curl git ripgrep tmux vim zsh"
-dnf_packages_optional="dnf-plugins-core gnome-tweak-tool unzip p7zip libnsl tig make gnupg htop jq pass sysstat pwgen rsync unzip nodejs util-linux-user"
+dnf_packages_optional="dnf-plugins-core gnome-tweaks gnome-extensions-app gnome-tweak-tool unzip p7zip libnsl tig make gnupg htop jq pass sysstat pwgen rsync unzip nodejs util-linux-user"
 dnf_packages_php="php-cli composer php-mysqli php-pgsql php-apc php-bcmath php-xdebug"
 dnf_remove_packages="php-mysqlnd"
 
@@ -69,7 +69,7 @@ function display_packages {
 
 if [ -z "${skip_system_packages}" ]; then
 
-printf "${GREEN}Fedora install ${YELLOW}version 0.0.1 ${GREEN}${NC}\n\n"
+printf "${GREEN}Fedora ${YELLOW}34 ${GREEN}${NC}\n\n"
 printf "If you choose yes, all of the system packages below will be installed:\n\n"
 printf "${RED}$(display_packages)${NC}\n\n"
 
