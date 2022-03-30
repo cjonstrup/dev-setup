@@ -36,8 +36,24 @@ function dnf_remove_packages {
 function dnf_system_setup {
     # shellcheck disable=SC2086
 
+    #Filewatchers
+    cat << EOF | sudo tee /etc/sysctl.d/98-local.conf
+    # 2^23
+    fs.inotify.max_queued_events = 8388608
+    # 2^16
+    fs.inotify.max_user_instances = 65536
+    # 2^22
+    fs.inotify.max_user_watches = 4194304
+    EOF
+
     #Disable firewall
     sudo systemctl disable firewalld && sudo systemctl stop firewalld
+    
+    #Use fast mirror
+    sudo echo 'fastestmirror=true' >> /etc/dnf/dnf.conf
+    
+    #Disable selinux
+    sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 
     #Docker
     sudo systemctl enable docker 
@@ -62,13 +78,36 @@ function dnf_system_setup {
     
     #Sublime
     sudo dnf config-manager --add-repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo && sudo dnf -y install sublime-text
-    
-    #Laravel
-    composer global require laravel/installer
-    composer global require friendsofphp/php-cs-fixer
-    
+       
     #Zsh
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    
+    # .gitconfig
+    cat << EOF >> .gitconfig
+    [user]
+       name = "YOUR NAME"
+       email = "YOUR EMAIL"
+    [push]
+       default = simple
+    [alias]
+       ci = commit -a -v
+       cv = commit -v
+       st = status
+       ss = status -s
+       br = branch -a -v
+       bm = branch --merged
+       pr = fetch --prune
+       pp = pull --prune
+       c = checkout
+       b = branch
+       m = merge
+       mm = merge master
+       stat = log --stat
+    [pull]
+       rebase = false
+    [core]
+       editor = vim
+    EOF
 }
 
 function display_packages {
