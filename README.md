@@ -1,3 +1,3 @@
 # Fedora 34 dev-setup
 
-bash <(curl -sS https://raw.githubusercontent.com/cjonstrup/dev-setup/master/fedora-34)
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/cjonstrup/dev-setup/master/fedora-34)"
