@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+
+set -e
+
+skip_system_packages="${1}"
+
+os_type="$(uname -s)"
+
+# Setup variable for needed console color definitions
+RED='\033[1;31m'
+YELLOW='\033[1;33m'
+GREEN='\033[1;32m'
+NC='\033[0m' # No Color
+
+dnf_packages="wget curl git ripgrep tmux vim zsh"
+dnf_packages_optional="unzip p7zip libnsl tig make gnupg htop jq pass sysstat pwgen rsync unzip nodejs util-linux-user docker docker-compose"
+dnf_packages_php="php-cli composer php-mysqli php-pgsql php-bcmath php-xdebug"
+dnf_remove_packages="php-mysqlnd"
+
+###############################################################################
+# Install packages using your OS' package manager
+###############################################################################
+
+function dnf_install_packages {
+    # shellcheck disable=SC2086
+    sudo dnf update -y && sudo dnf install -y ${dnf_packages} ${dnf_packages_optional} ${dnf_packages_compression} ${dnf_packages_php}
+}
+
+function dnf_remove_packages {
+    # shellcheck disable=SC2086
+    sudo dnf remove -y ${dnf_remove_packages}
+}
+
+function dnf_system_setup {
+    # shellcheck disable=SC2086
+
+    #Disable firewall
+    sudo systemctl disable firewalld && sudo systemctl stop firewalld
+
+    #Docker
+    sudo systemctl enable docker 
+    sudo usermod -aG docker $USER   
+    sudo systemctl restart docker
+       
+    sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.7/ctop-0.7.7-linux-amd64 -O /usr/local/bin/ctop
+    sudo chmod +x /usr/local/bin/ctop
+    
+    sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+    sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+    #Google endpoint verfication
+    sudo curl -L "https://github.com/cjonstrup/dev-setup/raw/main/google-native-helper.tar.gz" -o google-native-helper.tar.gz
+    sudo tar zxvf google-native-helper.tar.gz -C /
+    
+    #NPM packages
+    sudo npm install -g gitlab-ci-local
+    
+    #.NET
+    sudo dnf -y copr enable @dotnet-sig/dotnet && sudo dnf -y install dotnet
+    
+    #Sublime
+    sudo dnf config-manager --add-repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo && sudo dnf -y install sublime-text
+    
+    #Laravel
+    composer global require laravel/installer
+    composer global require friendsofphp/php-cs-fixer
+}
+
+function display_packages {
+    if [ "${os_type}" == "Linux" ]; then
+        printf "${dnf_packages}\n${dnf_packages_optional}\n${dnf_packages_php}"
+    else
+        exit 0
+    fi
+}
+
+if [ -z "${skip_system_packages}" ]; then
+
+printf "${GREEN}Fedora ${YELLOW}34 ${GREEN}${NC}\n\n"
+printf "If you choose yes, all of the system packages below will be installed:\n\n"
+printf "${RED}$(display_packages)${NC}\n\n"
+
+cat << EOF
+If you choose no, the above packages will not be installed and this script
+will exit. This gives you a chance to edit the list of packages if you don't
+agree with any of the decisions.
+
+
+The packages listed after zsh are technically optional but are quite useful.
+
+EOF
+    while true; do
+        printf "${GREEN}"
+        read -rp "Do you want to install the above packages? (y/n) " yn
+        printf "${NC}"
+        case "${yn}" in
+            [Yy]*)
+                if [ "${os_type}" == "Linux" ]; then
+                    dnf_install_packages
+                    dnf_system_setup
+                    dnf_remove_packages
+                else
+                    exit 0
+                fi
+
+                break;;
+            [Nn]*) exit 0;;
+            *) echo "Please answer y or n";;
+        esac
+    done
+else
+    echo "System package installation was skipped!"
+fi
+
+
+###############################################################################
+# Done!
+###############################################################################
+
+cat << EOF
+Everything was installed successfully!
+Check out the README file on GitHub to do 1 quick thing manually:
+https://github.com/cjonstrup/dev-setup
+You can safely close this terminal.
+The next time you open your terminal zsh will be ready to go!
+EOF
+
+exit 0
