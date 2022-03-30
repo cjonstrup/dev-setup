@@ -64,6 +64,9 @@ function dnf_system_setup {
     #Laravel
     composer global require laravel/installer
     composer global require friendsofphp/php-cs-fixer
+    
+    #Zsh
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
 
 function display_packages {
