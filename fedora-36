@@ -6,6 +6,8 @@ skip_system_packages="${1}"
 
 os_type="$(uname -s)"
 
+sudo dnf -y update
+
 # Setup variable for needed console color definitions
 RED='\033[1;31m'
 YELLOW='\033[1;33m'
