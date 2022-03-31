@@ -78,33 +78,6 @@ function dnf_system_setup {
        
     #Zsh
     #sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    
-    # .gitconfig
-    cat << EOF >> .gitconfig
-    [user]
-       name = "YOUR NAME"
-       email = "YOUR EMAIL"
-    [push]
-       default = simple
-    [alias]
-       ci = commit -a -v
-       cv = commit -v
-       st = status
-       ss = status -s
-       br = branch -a -v
-       bm = branch --merged
-       pr = fetch --prune
-       pp = pull --prune
-       c = checkout
-       b = branch
-       m = merge
-       mm = merge master
-       stat = log --stat
-    [pull]
-       rebase = false
-    [core]
-       editor = vim
-    EOF
 }
 
 function display_packages {
