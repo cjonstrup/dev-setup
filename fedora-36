@@ -36,13 +36,6 @@ function dnf_remove_packages {
 function dnf_system_setup {
     # shellcheck disable=SC2086
 
-    #Filewatchers
-    #cat << EOF | sudo tee /etc/sysctl.d/98-local.conf
-    #fs.inotify.max_queued_events = 8388608
-    #fs.inotify.max_user_instances = 65536
-    #fs.inotify.max_user_watches = 4194304
-    #EOF
-
     #Disable firewall
     sudo systemctl disable firewalld && sudo systemctl stop firewalld
     
