@@ -71,6 +71,16 @@ function dnf_system_setup {
        
     #Zsh
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    
+    #Filewatchers
+    cat <<EOF | while read -r FOO; do
+    fs.inotify.max_queued_events = 8388608
+    fs.inotify.max_user_instances = 65536
+    fs.inotify.max_user_watches = 4194304
+    EOF
+
+    echo $FOO | sudo tee -a /etc/sysctl.d/98-local.conf >/dev/null
+    done
 }
 
 function display_packages {
