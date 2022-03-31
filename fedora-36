@@ -40,7 +40,7 @@ function dnf_system_setup {
     sudo systemctl disable firewalld && sudo systemctl stop firewalld
     
     #Use fast mirror
-    sudo echo 'fastestmirror=true' >> /etc/dnf/dnf.conf
+    #sudo echo 'fastestmirror=true' >> /etc/dnf/dnf.conf
     
     #Disable selinux
     sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
@@ -70,7 +70,7 @@ function dnf_system_setup {
     sudo dnf config-manager --add-repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo && sudo dnf -y install sublime-text
        
     #Zsh
-    #sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 }
 
 function display_packages {
