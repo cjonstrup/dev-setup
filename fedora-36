@@ -38,11 +38,8 @@ function dnf_system_setup {
 
     #Filewatchers
     cat << EOF | sudo tee /etc/sysctl.d/98-local.conf
-    # 2^23
     fs.inotify.max_queued_events = 8388608
-    # 2^16
     fs.inotify.max_user_instances = 65536
-    # 2^22
     fs.inotify.max_user_watches = 4194304
     EOF
 
