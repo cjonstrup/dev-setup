@@ -70,7 +70,7 @@ function dnf_system_setup {
     sudo dnf config-manager --add-repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo && sudo dnf -y install sublime-text
        
     #Zsh
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    #sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     
     #Filewatchers
     echo "fs.inotify.max_queued_events = 8388608" | sudo tee /etc/sysctl.d/98-local.conf >/dev/null
