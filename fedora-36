@@ -73,6 +73,7 @@ function dnf_system_setup {
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     
     #Filewatchers
+    echo "Filewatchers"
     cat <<EOF | while read -r FOO; do
     fs.inotify.max_queued_events = 8388608
     fs.inotify.max_user_instances = 65536
