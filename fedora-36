@@ -64,6 +64,7 @@ function dnf_system_setup {
     sudo npm install -g gitlab-ci-local
     
     #.NET
+    printf "${GREEN}.NET${NC}\n\n"
     sudo dnf -y copr enable @dotnet-sig/dotnet && sudo dnf -y install dotnet
     
     #Sublime
@@ -73,6 +74,7 @@ function dnf_system_setup {
     #sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     
     #Filewatchers
+    printf "${GREEN}Filewatchers${NC}\n\n"
     echo "fs.inotify.max_queued_events = 8388608" | sudo tee /etc/sysctl.d/98-local.conf >/dev/null
     echo "fs.inotify.max_user_instances = 65536" | sudo tee -a /etc/sysctl.d/98-local.conf >/dev/null
     echo "fs.inotify.max_user_watches = 4194304" | sudo tee -a /etc/sysctl.d/98-local.conf >/dev/null
